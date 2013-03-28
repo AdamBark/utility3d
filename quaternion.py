@@ -8,7 +8,7 @@ class Quaternion(object):
         self.v = numpy.array((complex(x),complex(y),complex(z)))
 
     def __neg__(self):
-        # Actually returning the inverse of the quaternion
+        """Return the inverse of the quaternion."""
         return Quaternion(self.w, *-self.v)
 
     def __imul__(self, q):
@@ -31,16 +31,25 @@ class Quaternion(object):
         self.w /= mod_q
         self.v /= mod_q
 
-    def rotation_vector(self, vec):
-        # Rotates vec around the axis defined by the quaternion
-        return ((self * numpy.complex(vec) * -self).v).real
+    def rotate_vector(self, vec):
+        """Return a vector equivalent to vec rotated by this quaternion."""
+        return ((self * vec * -self).v).real
 
-    def pointing_vector(self):
-        return (self.v/math.sqrt(1-self.w**2)).real
+    def pointing_vector(self, origin=(0.0, 0.0, -1.0)):
+        """Return the vector about which roll occurs.
+
+        If the angle of rotation is 0 then the real part, w,
+        is 1 so return origin rather than NaNs.
+
+        """
+        if self.w != 1.0:
+            return (self.v/math.sqrt(1-self.w**2)).real
+        else:
+            return origin
 
     def matrix(self):
         a = self.w
-        b, c, d = numpy.real(self.v)
+        b, c, d = self.v.real
         return numpy.matrix((
             (a**2+b**2-c**2-d**2, 2*b*c - 2*a*d,       2*b*d + 2*a*c,       0),
             (2*b*c + 2*a*d,       a**2-b**2+c**2-d**2, 2*c*d - 2*a*b,       0),
