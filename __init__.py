@@ -1,2 +1,1 @@
-from quaternion import Quaternion
-import views
+from .quaternion import Quaternion
