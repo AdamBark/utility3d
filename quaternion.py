@@ -4,8 +4,8 @@ import numpy
 
 class Quaternion(object):
     def __init__(self, w, x, y, z):
-        self.w = w
-        self.v = numpy.array((complex(x),complex(y),complex(z)))
+        self.w = float(w)
+        self.v = numpy.array((x, y, z), dtype=float)
 
     def __neg__(self):
         """Return the inverse of the quaternion."""
@@ -23,8 +23,8 @@ class Quaternion(object):
             )
 
     def __repr__(self):
-        return "Quaternion(%f, (%f, %f, %f))" % (self.w, self.v[0],
-                                                 self.v[1], self.v[2])
+        return "Quaternion({}, ({}, {}, {}))".format(self.w, self.v[0],
+                                                     self.v[1], self.v[2])
 
     def normalise(self):
         mod_q = numpy.sqrt(self.w**2 + sum(self.v**2))
@@ -33,7 +33,7 @@ class Quaternion(object):
 
     def rotate_vector(self, vec):
         """Return a vector equivalent to vec rotated by this quaternion."""
-        return ((self * vec * -self).v).real
+        return ((self * vec * -self).v)
 
     def pointing_vector(self, origin=(0.0, 0.0, -1.0)):
         """Return the vector about which roll occurs.
@@ -43,13 +43,13 @@ class Quaternion(object):
 
         """
         if self.w != 1.0:
-            return (self.v/math.sqrt(1-self.w**2)).real
+            return (self.v/numpy.sqrt(1 - self.w**2))
         else:
             return origin
 
     def matrix(self):
         a = self.w
-        b, c, d = self.v.real
+        b, c, d = self.v
         return numpy.matrix((
             (a**2+b**2-c**2-d**2, 2*b*c - 2*a*d,       2*b*d + 2*a*c,       0),
             (2*b*c + 2*a*d,       a**2-b**2+c**2-d**2, 2*c*d - 2*a*b,       0),
