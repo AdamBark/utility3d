@@ -1,6 +1,5 @@
-import math
-import ctypes
 import numpy
+
 
 class Quaternion(object):
     def __init__(self, w, x, y, z):
@@ -54,4 +53,5 @@ class Quaternion(object):
             (a**2+b**2-c**2-d**2, 2*b*c - 2*a*d,       2*b*d + 2*a*c,       0),
             (2*b*c + 2*a*d,       a**2-b**2+c**2-d**2, 2*c*d - 2*a*b,       0),
             (2*b*d - 2*a*c,       2*c*d + 2*a*b,       a**2-b**2-c**2+d**2, 0),
-            (0,                   0,                   0,                   1)))
+            (0,                   0,                   0,                   1)
+        ))
