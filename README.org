@@ -1,0 +1,2 @@
+* Utility 3d
+A python library for setting up OpenGL viewports and calculating rotation matrices with Quaternions.
